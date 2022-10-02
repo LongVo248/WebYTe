@@ -23,8 +23,8 @@ public class Role extends AbstractAuditEntity implements java.io.Serializable {
     @Column(name = "ROLE_NAME", nullable = false)
     private String roleName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role", cascade = CascadeType.ALL)
-    private Set<Account> accounts = new HashSet<>(0);
+    @OneToMany(mappedBy = "role")
+    private Set<Account> accounts = new HashSet<>();
 
     @Override
     public String toString() {
