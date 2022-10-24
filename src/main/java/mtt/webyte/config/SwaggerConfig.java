@@ -1,27 +1,61 @@
 package mtt.webyte.config;
 
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
-import springfox.documentation.builders.ApiInfoBuilder;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Configurable
-@EnableSwagger2
-public class SwaggerConfig{
-        @Bean
-        public Docket postsApi(){
-            return  new Docket(DocumentationType.SWAGGER_2)
-                    .groupName("public-api").apiInfo(apiInfo())
-                    .select()
-                    .apis(RequestHandlerSelectors.basePackage("com.Trang.webyte.controller"))
-                    .build();
-        }
-        private ApiInfo apiInfo(){
-            return  new ApiInfoBuilder().title("Webyte Api").description("Employee API Reference  for dev")
-                    .termsOfServiceUrl("http://localhost:8080/webyte/").licenseUrl("phantrang151220@gmail.com").version("1.0").build();
-        }
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+@Configuration
+public class SwaggerConfig {
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfo(
+                "Spring Boot Blog REST APIs",
+                "Spring Boot Blog REST API Documentation",
+                "1",
+                "Terms of service",
+                new Contact("Võ Hoàng Long", "www.javaguides.net", "Vohoanglongfx@gmail.com"),
+                "License of API",
+                "API license URL",
+                Collections.emptyList()
+        );
+    }
+
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder().securityReferences(defaultAuth()).build();
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
+
+    }
 }
