@@ -44,18 +44,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().cors().configurationSource(request -> {
-            CorsConfiguration configuration = new CorsConfiguration();
-//            configuration.setAllowedOrigins(Arrays.asList("*"));// nếu muốn cho phép tất cả thì thay url thành "*"
-            configuration.setAllowedOrigins(Collections.singletonList(url));// nếu muốn cho phép tất cả thì thay url thành "*"
-            configuration.setAllowedMethods(Arrays.asList(method));
-            configuration.setAllowedHeaders(Collections.singletonList("*"));
-            configuration.setAllowCredentials(true);
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", configuration);
-            return configuration;
-        });
-        httpSecurity.authorizeRequests()
+//        httpSecurity.csrf().disable().cors().configurationSource(request -> {
+//            CorsConfiguration configuration = new CorsConfiguration();
+//            configuration.setAllowedOrigins(Collections.singletonList("*"));// nếu muốn cho phép tất cả thì thay url thành "*"
+//            configuration.setAllowedOrigins(Collections.singletonList(url));// nếu muốn cho phép tất cả thì thay url thành "*"
+////            configuration.setAllowedOrigins(Collections.singletonList(url));// nếu muốn cho phép tất cả thì thay url thành "*"
+//            configuration.setAllowedMethods(Arrays.asList(method));
+//            configuration.setAllowedHeaders(Collections.singletonList("*"));
+//            configuration.setAllowCredentials(true);
+//            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//            source.registerCorsConfiguration("/**", configuration);
+//            return configuration;
+//        });
+        httpSecurity
+                .csrf().disable()
+                .cors().disable()
+                .authorizeRequests()
                 .antMatchers("/webyte/account/**", "/webyte/doctor/**", "/webyte/news/**", "/webyte/dept/**", "/**").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling()

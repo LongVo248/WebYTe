@@ -3,7 +3,6 @@ package mtt.webyte.dto;
 import lombok.*;
 import mtt.webyte.model.Role;
 
-import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -13,7 +12,7 @@ import java.util.Map;
 @ToString
 public class AccountDTO extends AbstractDTO {
     private String userName;
-    private String password;
+            private String password;
     private Integer roleId;
 
     public AccountDTO(Map<String, Object> map) {

@@ -13,6 +13,7 @@ import mtt.webyte.services.PatientService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -77,7 +78,7 @@ public class AccountImpl implements AccountService {
             logger.info(BL_ID + " - Login successfully");
             logger.info(BL_ID + " - Parent: " + paren);
             return paren;
-        } catch (Exception e) {
+        } catch (BadCredentialsException e) {
             e.printStackTrace();
             paren.put("username", null);
             paren.put("role", null);
@@ -98,7 +99,6 @@ public class AccountImpl implements AccountService {
             throw new RuntimeException("Password is null");
         }
     }
-
     public List<Account> findAllAccount() {
         return accountRepository.findAll();
     }

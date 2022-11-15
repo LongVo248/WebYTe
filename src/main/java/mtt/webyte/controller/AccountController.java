@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.SystemException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/webyte/account")
 public class AccountController {
@@ -38,14 +39,19 @@ public class AccountController {
 
 
     @PostMapping("/login")
-    public Map<String, Object> login(@RequestBody AccountDTO accountDTO) {
-        logger.info("Login request for user: " + accountDTO.toString());
-        Map<String, Object> map = accountService.login(accountDTO);
-        if (map != null) {
-            return map;
-        } else {
-            return null;
+    public Map<String, Object> login(@RequestBody AccountDTO accountDTO) throws Exception{
+        try {
+            logger.info("Login request for user: " + accountDTO.toString());
+            Map<String, Object> map = accountService.login(accountDTO);
+            if (map != null) {
+                return map;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new SystemException();
         }
+
     }
 
     @PostMapping("/register")
