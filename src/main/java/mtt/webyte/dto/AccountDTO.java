@@ -1,40 +1,31 @@
 package mtt.webyte.dto;
 
-public class AccountDTO {
-    public String userName;
-    public String password;
-    public Long roleId;
+import lombok.*;
+import mtt.webyte.model.Role;
 
-    public AccountDTO() {
+import java.util.Map;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+public class AccountDTO extends AbstractDTO {
+    private String userName;
+            private String password;
+    private Integer roleId;
+
+    public AccountDTO(Map<String, Object> map) {
+        this.userName = (String) map.get("userName");
+        this.password = (String) map.get("password");
+        this.roleId = (Integer) map.get("roleId");
     }
 
-    public AccountDTO(Long roleId, String userName, String password) {
-        this.roleId = roleId;
-        this.userName = userName;
-        this.password = password;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRoleId(Object roleId) {
+        if (roleId instanceof Role) {
+            this.roleId = ((Role) roleId).getRoleId();
+        } else {
+            this.roleId = (Integer) roleId;
+        }
     }
 }

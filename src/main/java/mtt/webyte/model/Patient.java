@@ -1,9 +1,6 @@
 package mtt.webyte.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "T_PATIENT")
 public class Patient extends AbstractAuditEntity implements Serializable {
 
@@ -42,16 +40,6 @@ public class Patient extends AbstractAuditEntity implements Serializable {
     @Column(name = "BIRTH_DATE")
     private String birthDate;
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Patient{");
-        sb.append("id=").append(id);
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", email='").append(email).append('\'');
-        sb.append(", phone='").append(phone).append('\'');
-        sb.append(", address='").append(address).append('\'');
-        sb.append("}");
-        return sb.toString();
-    }
+    @Column(name = "ACCOUNT_USERNAME", nullable = false)
+    private String accountUsername;
 }

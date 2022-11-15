@@ -3,8 +3,6 @@ package mtt.webyte.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -18,17 +16,14 @@ public class Role extends AbstractAuditEntity implements java.io.Serializable {
 
     @Id
     @Column(name = "ROLE_ID", nullable = false)
-    private Long roleId;
+    private Integer roleId;
 
     @Column(name = "ROLE_NAME", nullable = false)
     private String roleName;
 
-    @OneToMany(mappedBy = "role")
-    private Set<Account> accounts = new HashSet<>();
-
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Role{");
+        final StringBuilder sb = new StringBuilder("ERole{");
         sb.append("roleId=").append(roleId);
         sb.append(", roleName=").append(roleName);
         sb.append('}');
