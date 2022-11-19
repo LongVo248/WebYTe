@@ -27,8 +27,8 @@ public class Schedule extends AbstractAuditEntity implements java.io.Serializabl
     private String endTime;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "DOCTOR_ID", nullable = false)
-    private Doctor doctor;
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 
     @Override
     public String toString() {
@@ -37,7 +37,7 @@ public class Schedule extends AbstractAuditEntity implements java.io.Serializabl
         sb.append(", dayOfWeek='").append(dayOfWeek).append('\'');
         sb.append(", startTime='").append(startTime).append('\'');
         sb.append(", endTime='").append(endTime).append('\'');
-        sb.append(", doctor=").append(doctor);
+        //sb.append(", doctor=").append(doctor);
         sb.append('}');
         return sb.toString();
     }

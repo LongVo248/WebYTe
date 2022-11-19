@@ -24,8 +24,11 @@ public class Department extends AbstractAuditEntity {
     @Column(name = "DEPARTMENT_NAME", nullable = false)
     private String departmentName;
 
-    @OneToMany(mappedBy = "department")
-    private Set<Doctor> doctors = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "T_DEPARTMENT_DOCTOR",
+            joinColumns = @JoinColumn(name = "DEPARTMENT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    private Set<User> users = new HashSet<>();
 
     @Override
     public String toString() {

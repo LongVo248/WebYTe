@@ -46,8 +46,8 @@ public class Sickness extends AbstractAuditEntity implements java.io.Serializabl
         sb.append("sickId=").append(sickId);
         sb.append(", sickName='").append(sickName).append('\'');
         sb.append(", description='").append(description).append('\'');
-        sb.append(", typeSickId=").append(typeSickId);
-        sb.append(", symptoms=").append(symptoms);
+//        sb.append(", typeSickId=").append(typeSickId);
+//        sb.append(", symptoms=").append(symptoms);
         sb.append('}');
         return sb.toString();
     }

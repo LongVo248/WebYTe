@@ -1,6 +1,7 @@
 package mtt.webyte.model;
 
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,29 +22,34 @@ public class AppointmentSchedule extends AbstractAuditEntity implements Serializ
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long appointmentId;
 
+    @Nationalized
     @Column(name = "APPOINTMENT_DATE", nullable = false)
     private String appointmentDate;
 
+    @Nationalized
     @Column(name = "APPOINTMENT_TIME", nullable = false)
     private String appointmentTime;
 
+    @Nationalized
     @Column(name = "APPOINTMENT_STATUS", nullable = false)
     private String appointmentStatus;
 
+    @Nationalized
     @Column(name = "APPOINTMENT_NUMBER", nullable = false)
     private String appointmentNumber;
 
+    @Nationalized
     @Column(name = "APPOINTMENT_TYPE", nullable = false)
     private String appointmentType;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "DOCTOR_ID", nullable = false)
-    private Doctor doctor;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "PATIENT_ID", nullable = false)
-    private Patient patient;
-
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
+//
+//    @ManyToOne(optional = false)
+//    @JoinColumn(name = "PATIENT_ID", nullable = false)
+//    private Patient patient;
+//
     @ManyToOne(optional = false)
     @JoinColumn(name = "DEPARTMENT_ID", nullable = false)
     private Department department;
@@ -63,10 +69,10 @@ public class AppointmentSchedule extends AbstractAuditEntity implements Serializ
         sb.append(", appointmentStatus='").append(appointmentStatus).append('\'');
         sb.append(", appointmentNumber='").append(appointmentNumber).append('\'');
         sb.append(", appointmentType='").append(appointmentType).append('\'');
-        sb.append(", doctor=").append(doctor);
-        sb.append(", patient=").append(patient);
-        sb.append(", department=").append(department);
-        sb.append(", medicalBills=").append(medicalBills);
+//        sb.append(", doctor=").append(doctor);
+//        sb.append(", patient=").append(patient);
+//        sb.append(", department=").append(department);
+//        sb.append(", medicalBills=").append(medicalBills);
         sb.append('}');
         return sb.toString();
     }

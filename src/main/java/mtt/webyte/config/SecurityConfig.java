@@ -1,5 +1,7 @@
 package mtt.webyte.config;
 
+//import mtt.webyte.config.jwt.JwtFilter;
+//import mtt.webyte.services.impl.AccountDetailServiceImpl;
 import mtt.webyte.config.jwt.JwtFilter;
 import mtt.webyte.services.impl.AccountDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 @Configurable
 @EnableWebSecurity
