@@ -22,7 +22,7 @@ public class AccountDetailServiceImpl implements UserDetailsService {
         try {
             mtt.webyte.model.User user = userRepository.findByUsername(username);
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            return new User(user.getUsername(), user.getPassword(), authorities);
+            return new User(user.getUsername(), user.getPwd(), authorities);
         } catch (Exception e) {
             throw new UsernameNotFoundException("User not found " + username);
         }
