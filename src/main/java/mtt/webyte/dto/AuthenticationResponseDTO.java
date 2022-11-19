@@ -10,5 +10,5 @@ import java.util.List;
 public class AuthenticationResponseDTO {
     private String username;
     private String token;
-    private List<RoleDTO> roleDTO;
+    private List<ERole> roleDTO;
 }

@@ -23,7 +23,7 @@ public class MedicalBill extends AbstractAuditEntity implements java.io.Serializ
     private Long totalPrice;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "PATIENT_ID", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private AppointmentSchedule appointmentSchedule;
 
     @Override

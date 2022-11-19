@@ -2,7 +2,7 @@ package mtt.webyte.config.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-import mtt.webyte.services.impl.CustomUserDetails;
+//import mtt.webyte.services.impl.CustomUserDetails;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

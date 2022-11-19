@@ -1,6 +1,8 @@
 package mtt.webyte.model;
 
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class Answer extends AbstractAuditEntity implements java.io.Serializable 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
 
+    @Nationalized
     @Column(name = "ANSWER_CONTENT", nullable = false)
     private String answerContent;
 
@@ -27,8 +30,8 @@ public class Answer extends AbstractAuditEntity implements java.io.Serializable 
     private Question question;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
-    private Account account;
+    @JoinColumn(name = "ID", nullable = false)
+    private User user;
 
     @Override
     public String toString() {

@@ -42,8 +42,8 @@ public class News extends AbstractAuditEntity implements java.io.Serializable {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name="ADMIN_ID", nullable = false)
-    private Admin adminId;
+    @JoinColumn(name="USER_ID", nullable = false)
+    private User user;
 
     @Override
     public String toString() {
@@ -55,7 +55,7 @@ public class News extends AbstractAuditEntity implements java.io.Serializable {
         sb.append(", author='").append(author).append('\'');
         sb.append(", date=").append(date);
         sb.append(", text='").append(text).append('\'');
-        sb.append(", adminId=").append(adminId);
+        //sb.append(", adminId=").append(adminId);
         sb.append('}');
         return sb.toString();
     }

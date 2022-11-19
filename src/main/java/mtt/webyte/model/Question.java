@@ -28,8 +28,8 @@ public class Question extends AbstractAuditEntity implements java.io.Serializabl
     private Topic topic;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
-    private Account account;
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Answer> answers = new HashSet<>();

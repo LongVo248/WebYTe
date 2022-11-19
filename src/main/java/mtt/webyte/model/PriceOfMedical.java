@@ -25,6 +25,6 @@ public class PriceOfMedical extends AbstractAuditEntity implements java.io.Seria
     private Long price;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "DOCTOR_ID", nullable = false)
-    private Doctor doctor;
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 }

@@ -2,10 +2,8 @@ package mtt.webyte.services.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import mtt.webyte.model.Account;
-import mtt.webyte.model.Role;
+import mtt.webyte.model.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -14,23 +12,23 @@ import java.util.Collections;
 @Data
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    Account account;
+    User user;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        for(Role role : account.getRoles()) {
-            return Collections.singleton(new SimpleGrantedAuthority("ROLE_"+ role.getRoleName()));
-        }
+//        for(Role role : account.getRoles()) {
+//            return Collections.singleton(new SimpleGrantedAuthority("ROLE_"+ role.getRoleName()));
+//        }
         return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
-        return account.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return account.getUserName();
+        return user.getUsername();
     }
 
     @Override
