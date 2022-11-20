@@ -8,43 +8,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import mtt.webyte.dto.NewsDTO;
-import mtt.webyte.services.impl.NewsServiceImpl;
+import mtt.webyte.dto.DepartmentDTO;
+import mtt.webyte.services.impl.DepartmentServiceImpl;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/webyte/news")
-public class NewsController {
+@RequestMapping("/webyte/department")
+public class DepartmentController {
 
 	private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticationRestController.class);
 	private static final String BLID = "CTL-ACC";
 
 	@Autowired
-	NewsServiceImpl newsService;
+	DepartmentServiceImpl departmentService;
 
 	@PostMapping("/")
-	public ResponseEntity<?> createNews(@Valid @RequestBody NewsDTO newsDTO) throws SystemException{
-		return ResponseEntity.ok(newsService.save(newsDTO)); 
+	public ResponseEntity<?> create(@Valid @RequestBody DepartmentDTO departmentDTO) throws SystemException{
+		return ResponseEntity.ok(departmentService.save(departmentDTO)); 
 	}
 
 	@PutMapping("/")
-	public ResponseEntity<?> updateNews(@Valid @RequestBody NewsDTO newsDTO) throws SystemException{
-		return ResponseEntity.ok(newsService.save(newsDTO)); 
+	public ResponseEntity<?> update(@Valid @RequestBody DepartmentDTO departmentDTO) throws SystemException{
+		return ResponseEntity.ok(departmentService.save(departmentDTO)); 
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteNews(@PathVariable Long id) throws SystemException{
-		newsService.delete(id);
+	public ResponseEntity<?> delete(@PathVariable Long id) throws SystemException{
+		departmentService.delete(id);
 		return ResponseEntity.ok("ok"); 
 	}
 
 	@GetMapping("/find-all")
 	public ResponseEntity<?> findNews(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "") String title) throws SystemException{
-		return ResponseEntity.ok(newsService.findNews(page, size, title)); 
+		return ResponseEntity.ok(departmentService.findDepartment(page, size, title)); 
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findOneNews(@PathVariable Long id) throws SystemException{
-		return ResponseEntity.ok(newsService.findOneNews(id)); 
+		return ResponseEntity.ok(departmentService.findOneDepartment(id)); 
 	}
 }
