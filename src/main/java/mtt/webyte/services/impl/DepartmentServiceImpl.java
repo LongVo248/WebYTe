@@ -26,7 +26,6 @@ public class DepartmentServiceImpl extends AbstractServiceImpl<DepartmentReposit
 	public DepartmentDTO save(DepartmentDTO dto) {
 		Department department = mapper.toEntity(dto, getCycleAvoidingMappingContext());
 		repository.save(department);
-		repository.save(department);
 		return dto;
 	}
 
