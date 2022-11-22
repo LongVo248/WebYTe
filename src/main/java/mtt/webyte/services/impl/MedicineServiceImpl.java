@@ -11,13 +11,9 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import mtt.webyte.dto.DepartmentDTO;
 import mtt.webyte.dto.MedicineDTO;
-import mtt.webyte.mapper.DepartmentMapper;
 import mtt.webyte.mapper.MedicineMapper;
-import mtt.webyte.model.Department;
 import mtt.webyte.model.Medicine;
-import mtt.webyte.repository.DepartmentRepository;
 import mtt.webyte.repository.MedicineRepository;
 
 @Service
