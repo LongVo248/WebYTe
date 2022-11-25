@@ -19,7 +19,8 @@ public class Department extends AbstractAuditEntity {
 
     @Id
     @Column(name = "DEPARTMENT_ID", nullable = false)
-    private String departmentId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long departmentId;
 
     @Column(name = "DEPARTMENT_NAME", nullable = false)
     private String departmentName;
