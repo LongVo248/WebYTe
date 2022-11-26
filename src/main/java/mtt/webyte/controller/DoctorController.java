@@ -28,4 +28,25 @@ public class DoctorController {
 	public ResponseEntity<?> create(@Valid @RequestBody DoctorDTO doctorDTO) throws SystemException{
 		return ResponseEntity.ok(doctorService.save(doctorDTO)); 
 	}
+
+	@PutMapping("/")
+	public ResponseEntity<?> update(@Valid @RequestBody DoctorDTO doctorDTO) throws SystemException{
+		return ResponseEntity.ok(doctorService.update(doctorDTO)); 
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id) throws SystemException{
+		doctorService.delete(id);	
+		return ResponseEntity.ok("ok"); 
+	}
+
+	@GetMapping("/find-all")
+	public ResponseEntity<?> findDoctors(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, @RequestParam(defaultValue = "") String name) throws SystemException{
+		return ResponseEntity.ok(doctorService.find(page, size, name)); 
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<?> findOneDoctor(@PathVariable Long id) throws SystemException{
+		return ResponseEntity.ok(doctorService.findOne(id)); 
+	}
 }
