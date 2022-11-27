@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import mtt.webyte.dto.AddDoctorRequest;
 import mtt.webyte.dto.DepartmentDTO;
+import mtt.webyte.dto.MessageResponse;
 import mtt.webyte.services.impl.DepartmentServiceImpl;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -36,7 +37,7 @@ public class DepartmentController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) throws SystemException{
 		departmentService.delete(id);
-		return ResponseEntity.ok("ok"); 
+		return ResponseEntity.ok(new MessageResponse("Ok")); 
 	}
 
 	@GetMapping("/find-all")

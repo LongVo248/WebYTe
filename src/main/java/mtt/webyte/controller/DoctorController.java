@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import mtt.webyte.dto.DepartmentDTO;
 import mtt.webyte.dto.DoctorDTO;
+import mtt.webyte.dto.MessageResponse;
 import mtt.webyte.services.impl.DepartmentServiceImpl;
 import mtt.webyte.services.impl.DoctorServiceImpl;
 
@@ -37,7 +38,7 @@ public class DoctorController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) throws SystemException{
 		doctorService.delete(id);	
-		return ResponseEntity.ok("ok"); 
+		return ResponseEntity.ok(new MessageResponse("ok")); 
 	}
 
 	@GetMapping("/find-all")
