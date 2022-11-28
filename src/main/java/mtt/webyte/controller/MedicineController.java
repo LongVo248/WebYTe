@@ -9,13 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import mtt.webyte.dto.MedicineDTO;
+import mtt.webyte.dto.MessageResponse;
 import mtt.webyte.dto.NewsDTO;
 import mtt.webyte.services.impl.MedicineServiceImpl;
 import mtt.webyte.services.impl.NewsServiceImpl;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/webyte/api/medicine")
+@RequestMapping("/webyte/medicine")
 public class MedicineController {
 
 	private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticationRestController.class);
@@ -37,7 +38,7 @@ public class MedicineController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteNews(@PathVariable Long id) throws SystemException{
 		service.deleteMedicine(id);
-		return ResponseEntity.ok("ok"); 
+		return ResponseEntity.ok(new MessageResponse("ok")); 
 	}
 
 	@GetMapping("/find-all")

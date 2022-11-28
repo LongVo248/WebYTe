@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import mtt.webyte.dto.MessageResponse;
 import mtt.webyte.dto.NewsDTO;
 import mtt.webyte.dto.SicknessDTO;
 import mtt.webyte.services.impl.NewsServiceImpl;
@@ -16,7 +17,7 @@ import mtt.webyte.services.impl.SicknessServiceImpl;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/webyte/controller")
+@RequestMapping("/webyte/sickness")
 public class SicknessController {
 
 	private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticationRestController.class);
@@ -38,7 +39,7 @@ public class SicknessController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteNews(@PathVariable Long id) throws SystemException{
 		sicknessService.delete(id);
-		return ResponseEntity.ok("ok"); 
+		return ResponseEntity.ok(new MessageResponse("ok")); 
 	}
 
 	@GetMapping("/find-all")
