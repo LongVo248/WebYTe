@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import mtt.webyte.dto.AddDoctorRequest;
 import mtt.webyte.dto.DepartmentDTO;
+import mtt.webyte.dto.MessageResponse;
 import mtt.webyte.services.impl.DepartmentServiceImpl;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -35,7 +37,7 @@ public class DepartmentController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) throws SystemException{
 		departmentService.delete(id);
-		return ResponseEntity.ok("ok"); 
+		return ResponseEntity.ok(new MessageResponse("Ok")); 
 	}
 
 	@GetMapping("/find-all")
@@ -46,5 +48,15 @@ public class DepartmentController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findOneNews(@PathVariable Long id) throws SystemException{
 		return ResponseEntity.ok(departmentService.findOneDepartment(id)); 
+	}
+
+	@PutMapping("/add-doctor")
+	public ResponseEntity<?> addDoctor(@RequestBody AddDoctorRequest request) throws SystemException{
+		return ResponseEntity.ok(departmentService.addDoctor(request)); 
+	}
+
+	@PutMapping("/remove-doctor")
+	public ResponseEntity<?> removeDoctor(@RequestBody AddDoctorRequest request) throws SystemException{
+		return ResponseEntity.ok(departmentService.removeDoctor(request)); 
 	}
 }

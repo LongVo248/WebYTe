@@ -36,18 +36,37 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
     @Override
 	public DoctorDTO save(DoctorDTO dto) {
 		User doctor = mapper.toEntity(dto, getCycleAvoidingMappingContext());
-		Set<Department> departments = departmentRepository.findByDepartmentIdIn(dto.getDepartmentId());
 		//@TODO generate random password and send email
 		doctor.setPwd("test");
 		doctor.setRole(RoleType.ROLE_DOCTOR);
-		User newDoctor = repository.save(doctor);
-		for (Department department : departments) {
-			Set<User> users = department.getUsers();
-			users.add(newDoctor);
-			department.setUsers(users);
-		}
-		departmentRepository.saveAll(departments);
+		repository.save(doctor);
 		return dto;
+	}
+
+	public DoctorDTO update(DoctorDTO dto) {
+		User doctor = repository.findUserByUserId(dto.getUserId());
+		mapper.update(doctor, dto);	
+		repository.save(doctor);
+		return dto;
+	}
+
+    public List<DoctorDTO> find(Integer page, Integer size, String name){
+	Pageable pagination = getPageable(page, size);
+	List<User> doctors = repository.findByUserFNameContainingOrUserLNameContainingAndRole(name, name, RoleType.ROLE_DOCTOR, pagination).toList();
+	List<DoctorDTO> dtos = new ArrayList<>();
+	for(User entity: doctors) {
+		dtos.add(mapper.toDto(entity, getCycleAvoidingMappingContext()));
+	}
+	return dtos;
+    }
+
+    public DoctorDTO findOne(Long id){
+	User entity = repository.findById(id).get();
+	return mapper.toDto(entity, getCycleAvoidingMappingContext());
+    }
+
+	public void deleteDoctor(long id) throws SystemException {
+    		super.delete(id);
 	}
 }
 

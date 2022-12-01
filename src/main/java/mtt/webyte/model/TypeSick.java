@@ -25,7 +25,7 @@ public class TypeSick extends AbstractAuditEntity implements java.io.Serializabl
     @Column(name = "TYPE_SICK_NAME", nullable = false)
     private String typeSickName;
 
-    @OneToMany(mappedBy = "typeSickId")
+    @OneToMany(mappedBy = "typeSick")
     private Set<Sickness> sicknesses = new java.util.LinkedHashSet<>();
 
     @Override
