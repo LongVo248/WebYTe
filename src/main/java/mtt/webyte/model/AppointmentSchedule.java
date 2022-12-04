@@ -5,6 +5,7 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class AppointmentSchedule extends AbstractAuditEntity implements Serializ
 
     @Nationalized
     @Column(name = "APPOINTMENT_DATE", nullable = false)
-    private String appointmentDate;
+    private Date appointmentDate;
 
     @Nationalized
     @Column(name = "APPOINTMENT_TIME", nullable = false)
@@ -45,11 +46,7 @@ public class AppointmentSchedule extends AbstractAuditEntity implements Serializ
     @ManyToOne(optional = false)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
-//
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = "PATIENT_ID", nullable = false)
-//    private Patient patient;
-//
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "DEPARTMENT_ID", nullable = false)
     private Department department;
@@ -69,10 +66,8 @@ public class AppointmentSchedule extends AbstractAuditEntity implements Serializ
         sb.append(", appointmentStatus='").append(appointmentStatus).append('\'');
         sb.append(", appointmentNumber='").append(appointmentNumber).append('\'');
         sb.append(", appointmentType='").append(appointmentType).append('\'');
-//        sb.append(", doctor=").append(doctor);
-//        sb.append(", patient=").append(patient);
-//        sb.append(", department=").append(department);
-//        sb.append(", medicalBills=").append(medicalBills);
+        sb.append(", user=").append(user);
+        sb.append(", department=").append(department);
         sb.append('}');
         return sb.toString();
     }

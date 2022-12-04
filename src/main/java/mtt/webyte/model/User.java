@@ -29,7 +29,7 @@ public class User extends AbstractAuditEntity implements java.io.Serializable {
     @Column(name = "USER_LAST_NAME", nullable = false)
     private String userLName;
 
-    @Column(name = "USER_FIRST_NAME")
+    @Column(name = "USER_FIRST_NAME", nullable = false)
     private String userFName;
 
     @Column(name = "USER_NAME", nullable = false)
@@ -43,22 +43,22 @@ public class User extends AbstractAuditEntity implements java.io.Serializable {
     @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name = "PHONE_NUMBER", nullable = false)
+    @Column(name = "PHONE_NUMBER")
     private String phoneNum;
 
     @Nationalized
-    @Column(name = "ADDRESS", nullable = false)
+    @Column(name = "ADDRESS")
     private String address;
 
-    @Column(name = "BIRTH_DATE", nullable = false)
+    @Column(name = "BIRTH_DATE")
     private Date birthDate;
 
     @Nationalized
-    @Column(name = "IMAGE", nullable = false)
+    @Column(name = "IMAGE")
     private String image;
 
     @Nationalized
-    @Column(name = "DOCTOR_NAME", nullable = false)
+    @Column(name = "DOCTOR_NAME")
     private String doctorName;
 
     @Column(name = "ROLE", nullable = false)
