@@ -13,7 +13,7 @@ public class AuthenticationDTO {
     private String username;
     @NotNull
     private String password;
-    @NotNull
+
     private RoleType roleType;
 
     @Override

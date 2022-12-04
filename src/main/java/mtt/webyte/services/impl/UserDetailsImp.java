@@ -1,25 +1,29 @@
 package mtt.webyte.services.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import mtt.webyte.model.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
-@Data
-@AllArgsConstructor
-public class CustomUserDetails implements UserDetails {
-    User user;
+public class UserDetailsImp implements UserDetails {
+    private User user;
+
+    public UserDetailsImp (User user) {
+        this.user = user;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        for(Role role : account.getRoles()) {
-//            return Collections.singleton(new SimpleGrantedAuthority("ROLE_"+ role.getRoleName()));
-//        }
-        return Collections.emptyList();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+        return authorities;
     }
+
+
 
     @Override
     public String getPassword() {
