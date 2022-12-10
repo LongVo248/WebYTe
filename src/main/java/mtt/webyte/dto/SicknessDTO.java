@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -25,4 +26,5 @@ public class SicknessDTO extends AbstractDTO implements Serializable {
     private String description;
     private Long typeSickId;
     private List<Long> symptomIds;
+    private TypeSickDTO typeSickDTO;
 }
