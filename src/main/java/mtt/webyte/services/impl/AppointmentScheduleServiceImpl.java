@@ -4,18 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import mtt.webyte.dto.AppointmentScheduleDTO;
+import mtt.webyte.dto.UserDTO;
 import mtt.webyte.mapper.AppointmentScheduleMapper;
+import mtt.webyte.mapper.UserMapper;
 import mtt.webyte.model.AppointmentSchedule;
+import mtt.webyte.model.User;
 import mtt.webyte.repository.AppointmentScheduleRepository;
+import mtt.webyte.repository.UserRepository;
 import mtt.webyte.services.AppointmentScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -23,13 +29,29 @@ import java.util.Map;
 @Setter
 public class AppointmentScheduleServiceImpl extends AbstractServiceImpl<AppointmentScheduleRepository, AppointmentScheduleMapper, AppointmentScheduleDTO, AppointmentSchedule> implements AppointmentScheduleService {
     private final AppointmentScheduleRepository appointmentScheduleRepository;
+    private final UserRepository userRepository;
+    
     private final AppointmentScheduleMapper appointmentScheduleMapper;
+	private final UserMapper userMapper;
 
     @Override
     public List<AppointmentSchedule> getAllListAppointmentSchedule() {
         return appointmentScheduleRepository.findAll();
     }
 
+    public List<AppointmentScheduleDTO> findAllOfUser(Long id) {
+	User users = userRepository.findByUserId(id);
+	Set<AppointmentSchedule> appointmentSchedules = users.getAppointmentSchedules();
+	List<AppointmentScheduleDTO> appointmentScheduleDTOs = new ArrayList<>();
+	for (AppointmentSchedule appointmentSchedule : appointmentSchedules) {
+		User doctor = appointmentSchedule.getDoctor();
+		UserDTO doctorDTO = userMapper.toDto(doctor, getCycleAvoidingMappingContext());
+		AppointmentScheduleDTO appointmentScheduleDTO = appointmentScheduleMapper.toDto(appointmentSchedule, getCycleAvoidingMappingContext());
+		appointmentScheduleDTO.setDoctorDTO(doctorDTO);
+		appointmentScheduleDTOs.add(appointmentScheduleDTO);
+	}
+	return appointmentScheduleDTOs;
+    }
     @Override
     public List<AppointmentScheduleDTO> getAllAppointmentSchedule() throws ParseException {
         return null;
@@ -87,7 +109,13 @@ public class AppointmentScheduleServiceImpl extends AbstractServiceImpl<Appointm
 
     @Override
     public AppointmentScheduleDTO save(AppointmentScheduleDTO dto) {
-        return null;
+	User user = userRepository.findByUserId(dto.getUserId());	
+	User doctor = userRepository.findByUserId(dto.getDoctorId());	
+	AppointmentSchedule appointmentSchedule = appointmentScheduleMapper.toEntity(dto, getCycleAvoidingMappingContext());	
+	appointmentSchedule.setUser(user);
+	appointmentSchedule.setDoctor(doctor);
+	appointmentSchedule.setAppointmentStatus("waiting"); AppointmentSchedule created = appointmentScheduleRepository.save(appointmentSchedule);
+        return appointmentScheduleMapper.toDto(created, getCycleAvoidingMappingContext());
     }
 
     @Override

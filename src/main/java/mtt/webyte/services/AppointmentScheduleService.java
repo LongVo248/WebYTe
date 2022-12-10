@@ -21,4 +21,5 @@ public interface AppointmentScheduleService extends AbstractService<AppointmentS
     public AppointmentScheduleDTO getAppointmentScheduleById(int id);
     public AppointmentSchedule updateStatus(int id, String status);
     public  Map<String,Object> getAppointDate(int id);
+	public List<AppointmentScheduleDTO> findAllOfUser(Long id);
 }
