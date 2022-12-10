@@ -45,6 +45,7 @@ dependencies {
     implementation 'org.springframework.session:spring-session-core:2.7.0'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+    implementation 'mysql:mysql-connector-java:8.0.31'
 }
 
 tasks.named('test') {

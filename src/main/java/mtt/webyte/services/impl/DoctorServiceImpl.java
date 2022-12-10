@@ -55,7 +55,9 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
 	List<User> doctors = repository.findByUserFNameContainingOrUserLNameContainingAndRole(name, name, RoleType.ROLE_DOCTOR, pagination).toList();
 	List<DoctorDTO> dtos = new ArrayList<>();
 	for(User entity: doctors) {
-		dtos.add(mapper.toDto(entity, getCycleAvoidingMappingContext()));
+		if (entity.getRole() == RoleType.ROLE_DOCTOR) {
+			dtos.add(mapper.toDto(entity, getCycleAvoidingMappingContext()));
+		}		
 	}
 	return dtos;
     }
