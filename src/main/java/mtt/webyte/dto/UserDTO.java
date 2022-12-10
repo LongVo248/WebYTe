@@ -4,6 +4,7 @@ import lombok.*;
 import mtt.webyte.enums.RoleType;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class UserDTO extends AbstractDTO implements Serializable {
     private String email;
     private String phoneNum;
     private String address;
-    private String birthDate;
+    private Date birthDate;
     private String image;
     private String doctorName;
     private RoleType roleType;

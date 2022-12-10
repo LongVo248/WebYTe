@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class AbstractServiceImpl <R extends JpaRepository, M extends AbstractMapper, D extends AbstractNonAuditDTO, E extends AbstractEntity>
         implements AbstractService<D, E>, MessageSourceAware {
     protected R repository;

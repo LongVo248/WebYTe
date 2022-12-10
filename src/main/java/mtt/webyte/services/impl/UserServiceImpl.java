@@ -1,20 +1,32 @@
 package mtt.webyte.services.impl;
 
+import mtt.webyte.config.jwt.JwtUtil;
+import mtt.webyte.dto.AuthenticationDTO;
 import mtt.webyte.dto.UserDTO;
 import mtt.webyte.enums.RoleType;
 import mtt.webyte.mapper.UserMapper;
 import mtt.webyte.mapper.helper.CycleAvoidingMappingContext;
+import mtt.webyte.model.Department;
 import mtt.webyte.model.User;
 import mtt.webyte.repository.UserRepository;
+import mtt.webyte.services.SendMailService;
 import mtt.webyte.services.UserService;
+import mtt.webyte.util.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.*;
 
+@Service
 public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMapper, UserDTO, User> implements UserService {
     @Value("${security.password.expired.days}")
     private long PWD_EXPIRED_DAY;
@@ -22,9 +34,22 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
     @Value("${security.registration.expired.days}")
     private long REG_EXPIRED_DAY;
 
-    @Autowired(required = true)
-    BCryptPasswordEncoder endcoder;
+    private static final UserMapper userMapper = UserMapper.INSTANCE;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtUtil jwtUtil;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder endcoder;
+
+    @Autowired
+    SendMailService sendMailService;
 
     @Override
     public boolean isEmailExist(String email) {
@@ -33,9 +58,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
 
     @Override
     public UserDTO findUserByUserId(Long userId) {
-        return getMapper()
-                .toDto(repository
-                        .findByUserId(userId), new CycleAvoidingMappingContext());
+        return null;
     }
 
     @Override
@@ -45,20 +68,20 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
 
     @Override
     public UserDTO findByEmail(String email) {
-        return getMapper().toDto(getRepository().findByEmail(email),
-                new CycleAvoidingMappingContext());
+        User user = userRepository.findByEmail(email);
+        return userMapper.toDto(user, new CycleAvoidingMappingContext());
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Long getUserIdByEmail(String email) {
-        return getRepository().getUserIdByEmail(email);
+        return null;
     }
 
     @Override
     public UserDTO findByUserId(Long userId) {
-        return getMapper().toDto(getRepository().findByUserId(userId), new CycleAvoidingMappingContext());
+        return null;
     }
+
 
     @Override
     public UserDTO saveUser(UserDTO userDTO, int registrationType) {
@@ -82,7 +105,6 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
     public Map<String, Object> login(AuthenticationDTO accountDTO) {
         Map<String, Object> paren = new HashMap<String, Object>();
         String role = "";
-
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(accountDTO.getUsername(), accountDTO.getPassword()));

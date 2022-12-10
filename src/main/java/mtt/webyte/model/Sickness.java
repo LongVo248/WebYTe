@@ -29,7 +29,7 @@ public class Sickness extends AbstractAuditEntity implements java.io.Serializabl
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "typeSickId", nullable = false)
-    private TypeSick typeSickId;
+    private TypeSick typeSick;
 
     @ManyToMany
     @JoinTable(name = "T_SICKNESS_SYMPTOM",

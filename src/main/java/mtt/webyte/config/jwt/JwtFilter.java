@@ -1,8 +1,7 @@
 package mtt.webyte.config.jwt;
 
 import lombok.extern.slf4j.Slf4j;
-//import mtt.webyte.services.impl.AccountDetailServiceImpl;
-import mtt.webyte.services.impl.AccountDetailServiceImpl;
+import mtt.webyte.services.impl.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,49 +25,36 @@ public class JwtFilter extends OncePerRequestFilter {
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(JwtFilter.class);
     @Autowired
     private JwtUtil jwtUtil;
-    @Autowired
-    private AccountDetailServiceImpl customUserDetailsService;
 
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        try {
-            // Lấy jwt từ request
-            String jwt = getJwtFromRequest(request);
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        String authorizationHeader = httpServletRequest.getHeader("Authorization");
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                // Lấy id user từ chuỗi jwt
-                String userName = tokenProvider.getUserNameFromJWT(jwt);
-                // Lấy thông tin người dùng từ id
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(userName);
-                if(userDetails != null) {
-                    // Nếu người dùng hợp lệ, set thông tin cho Seturity Context
-                    UsernamePasswordAuthenticationToken
-                            authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        String token = null;
+        String userName = null;
 
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            token = authorizationHeader.substring(7);
+            System.out.println(authorizationHeader+"token");
+            userName = jwtUtil.extractUsername(token);
+        }
+        if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+            if (jwtUtil.validateToken(token, userDetails)) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                usernamePasswordAuthenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-        } catch (Exception ex) {
-            log.error("failed on set user authentication", ex);
         }
-
-        filterChain.doFilter(request, response);
-    }
-
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        // Kiểm tra xem header Authorization có chứa thông tin jwt không
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
