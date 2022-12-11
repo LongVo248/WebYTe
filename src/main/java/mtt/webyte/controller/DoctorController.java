@@ -46,8 +46,14 @@ public class DoctorController {
 		return ResponseEntity.ok(doctorService.find(page, size, name)); 
 	}
 
+	@GetMapping("/department/{id}")
+	public ResponseEntity<?> findDoctors(@PathVariable Long id) throws SystemException{
+		return ResponseEntity.ok(doctorService.findDoctorOfDepartment(id)); 
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findOneDoctor(@PathVariable Long id) throws SystemException{
 		return ResponseEntity.ok(doctorService.findOne(id)); 
 	}
+
 }

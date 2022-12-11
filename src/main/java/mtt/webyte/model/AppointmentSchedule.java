@@ -48,8 +48,8 @@ public class AppointmentSchedule extends AbstractAuditEntity implements Serializ
     private User user;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "DEPARTMENT_ID", nullable = false)
-    private Department department;
+    @JoinColumn(name = "DOCTOR_ID", nullable = false)
+    private User doctor;
 
     @OneToMany(mappedBy = "appointmentSchedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MedicalBill> medicalBills = new HashSet<>();
@@ -67,7 +67,7 @@ public class AppointmentSchedule extends AbstractAuditEntity implements Serializ
         sb.append(", appointmentNumber='").append(appointmentNumber).append('\'');
         sb.append(", appointmentType='").append(appointmentType).append('\'');
         sb.append(", user=").append(user);
-        sb.append(", department=").append(department);
+        sb.append(", doctor=").append(doctor);
         sb.append('}');
         return sb.toString();
     }

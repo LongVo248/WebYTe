@@ -1,8 +1,10 @@
 package mtt.webyte.dto;
 
 import lombok.*;
+import mtt.webyte.model.User;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -11,11 +13,12 @@ import java.io.Serializable;
 @ToString
 public class AppointmentScheduleDTO extends AbstractDTO implements Serializable {
     private Long appointmentId;
-    private String appointmentDate;
+    private Date appointmentDate;
     private String appointmentTime;
     private String appointmentStatus;
     private String appointmentNumber;
     private String appointmentType;
     private Long userId;
-    private Long departmentId;
+    private Long doctorId;
+    private UserDTO doctorDTO; 
 }
