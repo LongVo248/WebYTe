@@ -1,9 +1,13 @@
 package mtt.webyte.controller;
 
 import mtt.webyte.dto.AppointmentScheduleDTO;
+import mtt.webyte.dto.MessageResponse;
 import mtt.webyte.model.AppointmentSchedule;
 import mtt.webyte.services.AppointmentScheduleService;
+import mtt.webyte.services.impl.AppointmentScheduleServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -12,12 +16,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.SystemException;
+import javax.websocket.server.PathParam;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/webyte/appointment-schedule")
 public class AppointmentScheduleController {
     @Autowired
     AppointmentScheduleService appointmentScheduleService;
+
+    @Autowired
+    AppointmentScheduleServiceImpl appointmentScheduleServiceImpl;
     @GetMapping()
     public List<AppointmentSchedule> getAllAppointment(){
         List<AppointmentSchedule> listAppointment= appointmentScheduleService.getAllListAppointmentSchedule();
@@ -105,4 +115,13 @@ public class AppointmentScheduleController {
         return  map;
     }
 
+	@GetMapping("/check-date/{id}")
+	public ResponseEntity<?> getScheduleOfDoctorAndDate(@PathVariable Long id, @PathParam("date") String date) throws SystemException{
+		try {
+			return ResponseEntity.ok(appointmentScheduleServiceImpl.getApointmentByDateAndDoctor(id, 
+					new SimpleDateFormat("yyyy-MM-dd").parse(date))); 
+		} catch (ParseException ex) {
+			return ResponseEntity.ok(new MessageResponse("bad request")); 
+		}
+	}
 }

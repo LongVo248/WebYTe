@@ -74,6 +74,8 @@ public class ScheduleServiceImpl extends AbstractServiceImpl<ScheduleRepository,
     }
 
     public ScheduleDTO getScheduleByDateAndDoctor(Long id, Date dateOfWeek){
+	    System.out.println(id);
+	    System.out.println(dateOfWeek);
 	List<Schedule> schedule = repository.findSchedule(dateOfWeek, id);	
 	if (schedule.size() != 0) {
 		return mapper.toDto(schedule.get(0), getCycleAvoidingMappingContext());

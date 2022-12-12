@@ -25,6 +25,7 @@ public class AppointmentSchedule extends AbstractAuditEntity implements Serializ
 
     @Nationalized
     @Column(name = "APPOINTMENT_DATE", nullable = false)
+	@Temporal(TemporalType.DATE)
     private Date appointmentDate;
 
     @Nationalized
