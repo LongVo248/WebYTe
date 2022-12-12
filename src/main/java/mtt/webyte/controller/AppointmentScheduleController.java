@@ -67,6 +67,7 @@ public class AppointmentScheduleController {
         }
         return null;
     }
+
     @PostMapping()
     public  AppointmentScheduleDTO insertAppointment(@RequestBody AppointmentScheduleDTO dto){
         if(dto!=null){
@@ -123,5 +124,10 @@ public class AppointmentScheduleController {
 		} catch (ParseException ex) {
 			return ResponseEntity.ok(new MessageResponse("bad request")); 
 		}
+	}
+
+	@GetMapping("/doctor/{id}")
+	public ResponseEntity<?> getAppointmentOfDoctor(@PathVariable Long id) throws SystemException{
+		return ResponseEntity.ok(appointmentScheduleServiceImpl.getAppointmentOfDoctor(id)); 
 	}
 }

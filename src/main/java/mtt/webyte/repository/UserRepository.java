@@ -27,4 +27,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Set<User> findByUserIdInAndRole(List<Long> userIdList, RoleType role);
 
 	Page<User> findByUserFNameContainingOrUserLNameContainingAndRole(String userFName, String userLName, RoleType role, Pageable pageable);
+
+	Set<User> findAllByRole(RoleType role);
 }
