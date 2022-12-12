@@ -71,7 +71,11 @@ public class AppointmentScheduleServiceImpl extends AbstractServiceImpl<Appointm
 
 	List<AppointmentScheduleDTO> scheduleDTOs = new ArrayList<AppointmentScheduleDTO>(); 
 	for (AppointmentSchedule schedule : schedules) {
-		scheduleDTOs.add(appointmentScheduleMapper.toDto(schedule, getCycleAvoidingMappingContext()));
+		AppointmentScheduleDTO appointmentScheduleDTO = appointmentScheduleMapper.toDto(schedule, getCycleAvoidingMappingContext());
+		UserDTO userDTO = userMapper.toDto(schedule.getUser(), getCycleAvoidingMappingContext());
+		userDTO.setPwd("");
+		appointmentScheduleDTO.setPatientDTO(userDTO);
+		scheduleDTOs.add(appointmentScheduleDTO);
 	}
 
 	return scheduleDTOs;

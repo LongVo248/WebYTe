@@ -3,6 +3,7 @@ package mtt.webyte.services.impl;
 import mtt.webyte.config.jwt.JwtUtil;
 import mtt.webyte.dto.AuthenticationDTO;
 import mtt.webyte.dto.ChangePasswordRequest;
+import mtt.webyte.dto.UpdateUserRequest;
 import mtt.webyte.dto.UserDTO;
 import mtt.webyte.enums.RoleType;
 import mtt.webyte.mapper.UserMapper;
@@ -159,21 +160,29 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
     @Transactional
     public UserDTO updateAccount(UserDTO userDTO) {
         User user1 = userRepository.findByEmail(userDTO.getEmail());
-        if (user1 == null) {
-            return null;
-        }
-        User user = userMapper.toEntity(userDTO, new CycleAvoidingMappingContext());
-        user.setUserId(user1.getUserId());
+	Long id = user1.getUserId();
+	System.out.println(user1);
+	System.out.println(userDTO);
+	user1.setUserId(id);
         if (user1.getRole().getType() == 1) {
-            user.setRole(RoleType.create(1));
+            user1.setRole(RoleType.create(1));
         } else if (user1.getRole().getType() == 2) {
-            user.setRole(RoleType.create(2));
+            user1.setRole(RoleType.create(2));
         } else if (user1.getRole().getType() == 3) {
-            user.setRole(RoleType.create(3));
+            user1.setRole(RoleType.create(3));
         }
-        user.setModifiedDate(new Date());
-        user.setModifiedBy(userDTO.getEmail());
-        return userMapper.toDto(userRepository.save(user), new CycleAvoidingMappingContext());
+        user1.setModifiedDate(new Date());
+        user1.setModifiedBy(userDTO.getEmail());
+	userRepository.save(user1);
+        return userMapper.toDto(userRepository.save(user1), new CycleAvoidingMappingContext());
+    }
+
+    public UserDTO updateAccount(UpdateUserRequest userDTO) {
+        User user1 = userRepository.findByUserId(userDTO.getUserId());
+	userMapper.update(user1, userDTO);
+        user1.setModifiedDate(new Date());
+	userRepository.save(user1);
+        return userMapper.toDto(userRepository.save(user1), new CycleAvoidingMappingContext());
     }
 
     @Override
@@ -197,6 +206,7 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
     public UserDTO getAccountById(Long id) {
         User user = userRepository.findById(id).get();
         UserDTO userDTO = userMapper.toDto(user, new CycleAvoidingMappingContext());
+	userDTO.setPwd("");
         if (user.getRole().getType() == 1) {
             userDTO.setRoleType(RoleType.create(1));
         } else if (user.getRole().getType() == 2) {

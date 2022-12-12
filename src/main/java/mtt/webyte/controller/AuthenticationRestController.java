@@ -2,6 +2,7 @@ package mtt.webyte.controller;
 
 import mtt.webyte.dto.AuthenticationDTO;
 import mtt.webyte.dto.ChangePasswordRequest;
+import mtt.webyte.dto.UpdateUserRequest;
 import mtt.webyte.dto.UserDTO;
 import mtt.webyte.model.User;
 import mtt.webyte.services.UserService;
@@ -83,12 +84,10 @@ public class AuthenticationRestController {
     }
 
     @PutMapping("/update-account")
-    public ResponseEntity<?> updateAccount(@RequestBody UserDTO userDTO,
-                                           HttpServletRequest request, HttpServletResponse response) {
-        logger.info(request.getRequestURL().toString());
+    public ResponseEntity<?> updateAccount(@RequestBody UpdateUserRequest userDTO) {
         logger.debug("userDTO", userDTO);
         try {
-            UserDTO account = userService.updateAccount(userDTO);
+            UserDTO account = userServiceImpl.updateAccount(userDTO);
             logger.info("Successly updated user");
             return ResponseEntity.ok(account);
         } catch (Exception e) {
