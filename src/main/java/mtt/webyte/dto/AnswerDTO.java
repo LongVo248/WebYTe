@@ -14,4 +14,5 @@ public class AnswerDTO extends AbstractDTO implements Serializable {
     private String answerContent;
     private Long questionId;
     private Long userId;
+    private UserDTO userDTO;
 }

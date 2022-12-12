@@ -74,9 +74,12 @@ public class QuestionServiceImpl extends AbstractServiceImpl<QuestionRepository,
 		Set<Answer> answers = question.getAnswers();
 		Set<AnswerDTO> answerDTOs = new HashSet<>();
 		for (Answer answer : answers) {
-			answerDTOs.add(answerMapper.toDto(answer, getCycleAvoidingMappingContext()));
+			AnswerDTO answerDTO = answerMapper.toDto(answer, getCycleAvoidingMappingContext()); 
+			UserDTO answerUserDTO = userMapper.toDto(answer.getUser(), getCycleAvoidingMappingContext());
+			answerUserDTO.setPwd("");
+			answerDTO.setUserDTO(answerUserDTO);	
+			answerDTOs.add(answerDTO);
 		}
-
 
 		userDTO.setPwd("");
 		dto.setUserDTO(userDTO);

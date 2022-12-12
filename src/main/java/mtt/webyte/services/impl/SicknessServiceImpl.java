@@ -14,8 +14,10 @@ import lombok.Getter;
 import lombok.Setter;
 import mtt.webyte.dto.NewsDTO;
 import mtt.webyte.dto.SicknessDTO;
+import mtt.webyte.dto.TypeSickDTO;
 import mtt.webyte.mapper.NewsMapper;
 import mtt.webyte.mapper.SicknessMapper;
+import mtt.webyte.mapper.TypeSickMapper;
 import mtt.webyte.model.News;
 import mtt.webyte.model.Sickness;
 import mtt.webyte.model.Symptom;
@@ -37,6 +39,7 @@ public class SicknessServiceImpl extends AbstractServiceImpl<SicknessRepository,
 	private final TypeSickRepository typeSickRepository;
 
     private final SicknessMapper mapper;
+    private final TypeSickMapper typeSickMapper;
 
     @Override
 	public SicknessDTO save(SicknessDTO dto) {
@@ -54,7 +57,10 @@ public class SicknessServiceImpl extends AbstractServiceImpl<SicknessRepository,
 	List<Sickness> list = repository.findBySickNameContaining(title, pagination).toList();
 	List<SicknessDTO> sicknessDTOs = new ArrayList<>();
 	for(Sickness sickness : list) {
-		sicknessDTOs.add(mapper.toDto(sickness, getCycleAvoidingMappingContext()));
+		SicknessDTO sicknessDTO = mapper.toDto(sickness, getCycleAvoidingMappingContext());
+		TypeSickDTO typeSickDTO = typeSickMapper.toDto(sickness.getTypeSick(), getCycleAvoidingMappingContext());
+		sicknessDTO.setTypeSickDTO(typeSickDTO);
+		sicknessDTOs.add(sicknessDTO);
 	}
 	return sicknessDTOs;
     }

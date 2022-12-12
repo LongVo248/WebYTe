@@ -1,6 +1,9 @@
 package mtt.webyte.model;
 
 import lombok.*;
+
+import java.util.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +21,7 @@ public class Schedule extends AbstractAuditEntity implements java.io.Serializabl
     private Long scheduleId;
 
     @Column(name = "DAY_OF_WEEK", nullable = false)
-    private String dayOfWeek;
+    private Date dayOfWeek;
 
     @Column(name = "START_TIME", nullable = false)
     private String startTime;

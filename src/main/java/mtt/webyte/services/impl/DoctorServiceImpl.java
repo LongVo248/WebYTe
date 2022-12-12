@@ -62,6 +62,18 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
 	return dtos;
     }
 
+    public List<DoctorDTO> findDoctorOfDepartment(Long departmentId){
+	Department department = departmentRepository.findById(departmentId).get();
+	Set<User> doctors = department.getUsers();
+	List<DoctorDTO> dtos = new ArrayList<>();
+	for(User entity: doctors) {
+		if (entity.getRole() == RoleType.ROLE_DOCTOR) {
+			dtos.add(mapper.toDto(entity, getCycleAvoidingMappingContext()));
+		}		
+	}
+	return dtos;
+    }
+
     public DoctorDTO findOne(Long id){
 	User entity = repository.findById(id).get();
 	return mapper.toDto(entity, getCycleAvoidingMappingContext());

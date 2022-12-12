@@ -29,6 +29,11 @@ public class AppointmentScheduleController {
         return listAppointment;
     }
 
+    @GetMapping("/user/{id}")
+    public List<AppointmentScheduleDTO> getAppointDateOfuser(@PathVariable("id")Long id){
+        return appointmentScheduleService.findAllOfUser(id);
+    }
+
     @GetMapping("/allByDoctor/{id}")
     public List<AppointmentScheduleDTO> getAllAppoint(@PathVariable("id") int id){
         List<AppointmentScheduleDTO> listAppointment=  appointmentScheduleService.getAllAppointmentScheduleByDoctor(id);
@@ -53,9 +58,9 @@ public class AppointmentScheduleController {
         return null;
     }
     @PostMapping()
-    public  AppointmentSchedule insertAppointment(@RequestBody AppointmentSchedule appointmentSchedule){
-        if(appointmentSchedule!=null){
-            AppointmentSchedule appointmentSchedule1= appointmentScheduleService.insertAppointmentSchedule(appointmentSchedule);
+    public  AppointmentScheduleDTO insertAppointment(@RequestBody AppointmentScheduleDTO dto){
+        if(dto!=null){
+            AppointmentScheduleDTO appointmentSchedule1= appointmentScheduleService.save(dto);
             return  appointmentSchedule1;
         }
         return null;
@@ -78,6 +83,7 @@ public class AppointmentScheduleController {
             return  0;
         }
     }
+
     @GetMapping("/count-time/{date}")
     public List<Map<String,Object>> getAllCountTime(@PathVariable("date") String date1) throws ParseException {
         SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
@@ -86,14 +92,17 @@ public class AppointmentScheduleController {
         List<Map<String,Object>> listCountTime= appointmentScheduleService.getCountTimeFull(date);
         return  listCountTime;
     }
+
     @PutMapping("/update-status/{id}/{trangthai}")
     public  AppointmentSchedule updateStatus(@PathVariable("id")int id,@PathVariable("trangthai")String status){
         System.err.println(id + " - " + status);
         return  appointmentScheduleService.updateStatus(id, status);
     }
+
     @GetMapping("/getAppointDate{id}")
     public Map<String,Object> getAppointDate(@PathVariable("id")int id){
         Map<String,Object> map = appointmentScheduleService.getAppointDate(id);
         return  map;
     }
+
 }

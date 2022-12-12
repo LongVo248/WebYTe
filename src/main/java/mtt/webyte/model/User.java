@@ -66,4 +66,10 @@ public class User extends AbstractAuditEntity implements java.io.Serializable {
 
     @ManyToMany(mappedBy = "users")
     private Set<Department> department = new java.util.LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Schedule> schedules = new java.util.LinkedHashSet<>();;
+
+    @OneToMany(mappedBy = "user")
+    private Set<AppointmentSchedule> appointmentSchedules = new java.util.LinkedHashSet<>();;
 }
