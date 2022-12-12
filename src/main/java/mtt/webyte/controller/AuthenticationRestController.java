@@ -1,9 +1,12 @@
 package mtt.webyte.controller;
 
 import mtt.webyte.dto.AuthenticationDTO;
+import mtt.webyte.dto.ChangePasswordRequest;
 import mtt.webyte.dto.UserDTO;
 import mtt.webyte.model.User;
 import mtt.webyte.services.UserService;
+import mtt.webyte.services.impl.UserServiceImpl;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +38,8 @@ public class AuthenticationRestController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     @PostMapping("/login")
     @SuppressWarnings("unchecked")
@@ -138,6 +143,17 @@ public class AuthenticationRestController {
         }
     }
 
+
+    @PutMapping("/change-password/")
+    public ResponseEntity<?> updatePassword(@RequestBody ChangePasswordRequest request) {
+        try {
+            logger.info("Successly change password");
+            return new ResponseEntity<>(!Objects.isNull(userServiceImpl.changePassword(request)), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("changePassword", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @PostMapping("/change-password/{id}")
     public ResponseEntity<?> changePassword(@PathVariable("id") Long id,
                                             @RequestBody String password,

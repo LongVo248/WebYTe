@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.transaction.SystemException;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -32,14 +33,19 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
     private final UserRepository repository;
     private final DepartmentRepository departmentRepository;
     private final DoctorMapper mapper;
+	private final PasswordEncoder passwordEncoder;
+	private final MailService mailService;
+
 
     @Override
 	public DoctorDTO save(DoctorDTO dto) {
 		User doctor = mapper.toEntity(dto, getCycleAvoidingMappingContext());
 		//@TODO generate random password and send email
-		doctor.setPwd("test");
+		String password = genRandomPassword(6);
+		doctor.setPwd(passwordEncoder.encode(password));
 		doctor.setRole(RoleType.ROLE_DOCTOR);
 		repository.save(doctor);
+		mailService.sendSimpleMessage(dto.getEmail(),"doctor password", password);
 		return dto;
 	}
 
@@ -81,6 +87,20 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
 
 	public void deleteDoctor(long id) throws SystemException {
     		super.delete(id);
+	}
+
+	public String genRandomPassword(int n) {
+		String AlphaNumericString = "0123456789";
+StringBuilder sb = new StringBuilder(n);
+
+for (int i = 0; i < n; i++) {
+
+int index = (int)(AlphaNumericString.length() * Math.random());
+
+sb.append(AlphaNumericString.charAt(index));
+}
+
+return sb.toString();
 	}
 }
 

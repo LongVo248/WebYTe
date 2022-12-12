@@ -65,6 +65,18 @@ public class AppointmentScheduleServiceImpl extends AbstractServiceImpl<Appointm
 	return scheduleDTOs;
     }
 
+    public List<AppointmentScheduleDTO> getAppointmentOfDoctor(Long id){
+	List<AppointmentSchedule> schedules = 
+		appointmentScheduleRepository.findApointmentOfDoctor(id);	
+
+	List<AppointmentScheduleDTO> scheduleDTOs = new ArrayList<AppointmentScheduleDTO>(); 
+	for (AppointmentSchedule schedule : schedules) {
+		scheduleDTOs.add(appointmentScheduleMapper.toDto(schedule, getCycleAvoidingMappingContext()));
+	}
+
+	return scheduleDTOs;
+    }
+
     @Override
     public List<AppointmentScheduleDTO> getAllAppointmentSchedule() throws ParseException {
         return null;

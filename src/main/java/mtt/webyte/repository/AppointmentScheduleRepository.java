@@ -14,4 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface AppointmentScheduleRepository extends JpaRepository<AppointmentSchedule, Long> {
 	@Query("select s from AppointmentSchedule s where s.doctor.userId = :id and s.appointmentDate = :date")
 	List<AppointmentSchedule> findApointment(@Param("id") Long id, @Param("date") Date date); 
+
+	@Query("select s from AppointmentSchedule s where s.doctor.userId = :id")
+	List<AppointmentSchedule> findApointmentOfDoctor(@Param("id") Long id); 
 }

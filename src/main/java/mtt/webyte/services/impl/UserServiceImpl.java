@@ -2,6 +2,7 @@ package mtt.webyte.services.impl;
 
 import mtt.webyte.config.jwt.JwtUtil;
 import mtt.webyte.dto.AuthenticationDTO;
+import mtt.webyte.dto.ChangePasswordRequest;
 import mtt.webyte.dto.UserDTO;
 import mtt.webyte.enums.RoleType;
 import mtt.webyte.mapper.UserMapper;
@@ -170,7 +171,6 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
         } else if (user1.getRole().getType() == 3) {
             user.setRole(RoleType.create(3));
         }
-        user.setPwd(user1.getPwd());
         user.setModifiedDate(new Date());
         user.setModifiedBy(userDTO.getEmail());
         return userMapper.toDto(userRepository.save(user), new CycleAvoidingMappingContext());
@@ -235,9 +235,30 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
         return BCrypt.checkpw(userDTO.getPwd(), user.getPwd());
     }
 
+    public boolean changePassword(ChangePasswordRequest request) {
+	User user = userRepository.findByUserId(request.getId());
+	if (BCrypt.checkpw(request.getOldPassword(), user.getPwd())) {
+		String newPass = endcoder.encode(request.getNewPassword());
+		user.setPwd(newPass);
+		userRepository.save(user);
+	}
+	return true;
+    }
+
+    public List<UserDTO> findAllPatient(){
+	    Set<User> patients = userRepository.findAllByRole(RoleType.ROLE_USER);
+	    List<UserDTO> patientDTOs = new ArrayList<>();
+
+	    for (User patient: patients) {
+		    patient.setPwd("");
+			patientDTOs.add(userMapper.toDto(patient, getCycleAvoidingMappingContext()));
+	    }
+
+	    return patientDTOs;
+    }
+
     @Override
     public UserDTO findByUsername(String username) {
-
         return userMapper.toDto(userRepository.findByUsername(username), new CycleAvoidingMappingContext());
     }
 
