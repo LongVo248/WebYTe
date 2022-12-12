@@ -21,6 +21,7 @@ public class Schedule extends AbstractAuditEntity implements java.io.Serializabl
     private Long scheduleId;
 
     @Column(name = "DAY_OF_WEEK", nullable = false)
+	@Temporal(TemporalType.DATE)
     private Date dayOfWeek;
 
     @Column(name = "START_TIME", nullable = false)

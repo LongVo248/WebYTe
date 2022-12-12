@@ -1,14 +1,19 @@
 package mtt.webyte.controller;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.SystemException;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import mtt.webyte.dto.MessageResponse;
 import mtt.webyte.dto.QuestionDTO ;
 import mtt.webyte.dto.ScheduleDTO;
 import mtt.webyte.dto.SicknessDTO;
@@ -36,5 +41,15 @@ public class ScheduleController{
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getScheduleOfDoctor(@PathVariable Long id) throws SystemException{
 		return ResponseEntity.ok(scheduleServiceImpl.getScheduleOfDoctor(id)); 
+	}
+
+	@GetMapping("/check-date/{id}")
+	public ResponseEntity<?> getScheduleOfDoctorAndDate(@PathVariable Long id, @PathParam("date") String date) throws SystemException{
+		try {
+			return ResponseEntity.ok(scheduleServiceImpl.getScheduleByDateAndDoctor(id, 
+					new SimpleDateFormat("yyyy-MM-dd").parse(date))); 
+		} catch (ParseException ex) {
+			return ResponseEntity.ok(new MessageResponse("bad request")); 
+		}
 	}
 }
