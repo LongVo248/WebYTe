@@ -1,6 +1,7 @@
 package mtt.webyte.services.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -70,6 +71,16 @@ public class ScheduleServiceImpl extends AbstractServiceImpl<ScheduleRepository,
 		dtoList.add(mapper.toDto(type, getCycleAvoidingMappingContext()));
 	}
 	return dtoList;
+    }
+
+    public ScheduleDTO getScheduleByDateAndDoctor(Long id, Date dateOfWeek){
+	    System.out.println(id);
+	    System.out.println(dateOfWeek);
+	List<Schedule> schedule = repository.findSchedule(dateOfWeek, id);	
+	if (schedule.size() != 0) {
+		return mapper.toDto(schedule.get(0), getCycleAvoidingMappingContext());
+	} 
+	return null;
     }
 }
 

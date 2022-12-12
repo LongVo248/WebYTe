@@ -52,6 +52,19 @@ public class AppointmentScheduleServiceImpl extends AbstractServiceImpl<Appointm
 	}
 	return appointmentScheduleDTOs;
     }
+
+    public List<AppointmentScheduleDTO> getApointmentByDateAndDoctor(Long id, Date date){
+	List<AppointmentSchedule> schedules = 
+		appointmentScheduleRepository.findApointment(id, date);	
+
+	List<AppointmentScheduleDTO> scheduleDTOs = new ArrayList<AppointmentScheduleDTO>(); 
+	for (AppointmentSchedule schedule : schedules) {
+		scheduleDTOs.add(appointmentScheduleMapper.toDto(schedule, getCycleAvoidingMappingContext()));
+	}
+
+	return scheduleDTOs;
+    }
+
     @Override
     public List<AppointmentScheduleDTO> getAllAppointmentSchedule() throws ParseException {
         return null;
@@ -187,4 +200,5 @@ public class AppointmentScheduleServiceImpl extends AbstractServiceImpl<Appointm
     public Pageable getPageable(Integer page, Integer size) {
         return null;
     }
+
 }
