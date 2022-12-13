@@ -33,6 +33,19 @@ public class AppointmentScheduleController {
         List<AppointmentSchedule> listAppointment= appointmentScheduleService.getAllListAppointmentSchedule();
         return listAppointment;
     }
+
+    @PutMapping("/update-done/{id}")
+    public Boolean updateDone(@PathVariable("id") Long id) throws ParseException {
+	appointmentScheduleServiceImpl.updateAppointmentStatusDone(id);	
+	return true;
+    }
+
+    @PutMapping("/update-compelete/{id}")
+    public Boolean updateComplete(@PathVariable("id") Long id) throws ParseException {
+	appointmentScheduleServiceImpl.updateAppointmentStatusCompelete(id);	
+	return true;
+    }
+
     @GetMapping("/all")
     public List<AppointmentScheduleDTO> getAllAppoint() throws ParseException {
         List<AppointmentScheduleDTO> listAppointment=  appointmentScheduleService.getAllAppointmentSchedule();
