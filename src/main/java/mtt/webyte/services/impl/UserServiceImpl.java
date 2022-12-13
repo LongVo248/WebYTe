@@ -3,6 +3,8 @@ package mtt.webyte.services.impl;
 import mtt.webyte.config.jwt.JwtUtil;
 import mtt.webyte.dto.AuthenticationDTO;
 import mtt.webyte.dto.ChangePasswordRequest;
+import mtt.webyte.dto.ForgetPassword;
+import mtt.webyte.dto.UpdateImageRequest;
 import mtt.webyte.dto.UpdateUserRequest;
 import mtt.webyte.dto.UserDTO;
 import mtt.webyte.enums.RoleType;
@@ -53,6 +55,9 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
     @Autowired
     SendMailService sendMailService;
 
+    @Autowired
+    MailService mailService;
+
     @Override
     public boolean isEmailExist(String email) {
         return this.findByEmail(email) != null;
@@ -73,6 +78,13 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
         User user = userRepository.findByEmail(email);
         return userMapper.toDto(user, new CycleAvoidingMappingContext());
     }
+    
+    public UserDTO updateImage(UpdateImageRequest request) {
+	User user = userRepository.findByUserId(request.getId());
+	user.setImage(request.getUrl());
+	User updatedUser = userRepository.save(user);
+	return userMapper.toDto(updatedUser, getCycleAvoidingMappingContext());
+    }
 
     @Override
     public Long getUserIdByEmail(String email) {
@@ -83,6 +95,31 @@ public class UserServiceImpl extends AbstractServiceImpl<UserRepository, UserMap
     public UserDTO findByUserId(Long userId) {
         return null;
     }
+
+	public UserDTO forgetPassword(ForgetPassword dto) {
+		User user = userRepository.findByEmail(dto.getEmail());
+		String password = genRandomPassword(6);
+		user.setPwd(endcoder.encode(password));
+		userRepository.save(user);
+		mailService.sendSimpleMessage(dto.getEmail(),"reset password", password);
+		UserDTO userDTO = userMapper.toDto(user, getCycleAvoidingMappingContext());
+		userDTO.setPwd("");
+		return userDTO;
+	}
+
+	public String genRandomPassword(int n) {
+		String AlphaNumericString = "0123456789";
+StringBuilder sb = new StringBuilder(n);
+
+for (int i = 0; i < n; i++) {
+
+int index = (int)(AlphaNumericString.length() * Math.random());
+
+sb.append(AlphaNumericString.charAt(index));
+}
+
+return sb.toString();
+	}
 
 
     @Override

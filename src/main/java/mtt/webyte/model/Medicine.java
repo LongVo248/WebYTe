@@ -31,7 +31,7 @@ public class Medicine extends AbstractAuditEntity implements java.io.Serializabl
     @Column(name = "MEDICINE_PACK", nullable = false)
     private String medicinePack;
 
-    @ManyToMany(mappedBy = "medicine")
+    @OneToMany(mappedBy = "prescription")
     private Set<PrescriptionMedical> prescriptionMedicals = new java.util.LinkedHashSet<>();
 
     @Override

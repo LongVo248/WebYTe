@@ -21,7 +21,7 @@ public class Prescription extends AbstractAuditEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long prescriptionId;
 
-    @ManyToMany(mappedBy = "prescription")
+    @OneToMany(mappedBy = "prescription")
     private Set<PrescriptionMedical> prescriptionMedicals = new java.util.LinkedHashSet<>();
 
     @OneToMany(mappedBy = "prescription")
