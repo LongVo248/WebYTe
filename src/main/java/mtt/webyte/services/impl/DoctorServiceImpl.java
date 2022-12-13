@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import mtt.webyte.dto.DepartmentDTO;
 import mtt.webyte.dto.DoctorDTO;
 import mtt.webyte.dto.MedicineDTO;
 import mtt.webyte.enums.RoleType;
+import mtt.webyte.mapper.DepartmentMapper;
 import mtt.webyte.mapper.DoctorMapper;
 import mtt.webyte.mapper.MedicineMapper;
 import mtt.webyte.model.Department;
@@ -33,6 +35,7 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
     private final UserRepository repository;
     private final DepartmentRepository departmentRepository;
     private final DoctorMapper mapper;
+	private final DepartmentMapper departmentMapper;
 	private final PasswordEncoder passwordEncoder;
 	private final MailService mailService;
 
@@ -62,7 +65,14 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
 	List<DoctorDTO> dtos = new ArrayList<>();
 	for(User entity: doctors) {
 		if (entity.getRole() == RoleType.ROLE_DOCTOR) {
-			dtos.add(mapper.toDto(entity, getCycleAvoidingMappingContext()));
+			DoctorDTO doctor = mapper.toDto(entity, getCycleAvoidingMappingContext());
+			Set<Department> departments = entity.getDepartment();
+			List<DepartmentDTO> departmentDTOs = new ArrayList<>();
+			for (Department department : departments) {
+				departmentDTOs.add(departmentMapper.toDto(department, getCycleAvoidingMappingContext()));	
+			}	
+			doctor.setDepartmentDTOs(departmentDTOs);
+			dtos.add(doctor);
 		}		
 	}
 	return dtos;

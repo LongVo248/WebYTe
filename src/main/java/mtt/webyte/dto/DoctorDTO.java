@@ -23,4 +23,5 @@ public class DoctorDTO extends AbstractDTO implements Serializable {
     private Date birthDate;
     private String image;
     private String doctorName;
+    private List<DepartmentDTO> departmentDTOs;
 }
