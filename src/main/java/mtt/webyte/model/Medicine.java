@@ -28,24 +28,11 @@ public class Medicine extends AbstractAuditEntity implements java.io.Serializabl
     @Column(name = "MEDICINE_DESCRIPTION", nullable = false)
     private String medicineDescription;
 
-    @Column(name = "MEDICINE_PRICE", nullable = false)
-    private Long medicinePrice;
-
-    @Column(name = "MEDICINE_QUANTITY", nullable = false)
-    private Long medicineQuantity;
-
-    @Column(name="MEDICINE_STATUS", nullable = false)
-    private String medicineStatus;
-
     @Column(name = "MEDICINE_PACK", nullable = false)
     private String medicinePack;
 
-    @ManyToMany
-    @JoinTable(name = "T_PRESCRIPTION_MEDICAL",
-            joinColumns = @JoinColumn(name = "MEDICINE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRESCRIPTION_ID"))
-    private Set<Prescription> prescriptions = new HashSet<>();
-
+    @ManyToMany(mappedBy = "medicine")
+    private Set<PrescriptionMedical> prescriptionMedicals = new java.util.LinkedHashSet<>();
 
     @Override
     public String toString() {
@@ -54,9 +41,6 @@ public class Medicine extends AbstractAuditEntity implements java.io.Serializabl
         sb.append(", medicineName='").append(medicineName).append('\'');
         sb.append(", medicineType='").append(medicineType).append('\'');
         sb.append(", medicineDescription='").append(medicineDescription).append('\'');
-        sb.append(", medicinePrice=").append(medicinePrice);
-        sb.append(", medicineQuantity=").append(medicineQuantity);
-        sb.append(", medicineStatus='").append(medicineStatus).append('\'');
         sb.append(", medicinePack='").append(medicinePack).append('\'');
         sb.append('}');
         return sb.toString();

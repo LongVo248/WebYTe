@@ -48,10 +48,6 @@ public class MedicineServiceImpl extends AbstractServiceImpl<MedicineRepository,
 
 	public void deleteMedicine(long id) throws SystemException {
 		Medicine medicine = repository.findById(id).get();	
-		
-		if (medicine.getPrescriptions().size() > 0) {	
-			throw new SystemException("Can not delete this medicine");
-		} 
     		super.delete(id);
 	}
 }
