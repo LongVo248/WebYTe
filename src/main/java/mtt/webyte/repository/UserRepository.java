@@ -3,6 +3,7 @@ package mtt.webyte.repository;
 import mtt.webyte.enums.RoleType;
 import mtt.webyte.model.User;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -29,4 +30,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Page<User> findByUserFNameContainingOrUserLNameContainingAndRole(String userFName, String userLName, RoleType role, Pageable pageable);
 
 	Set<User> findAllByRole(RoleType role);
+
 }

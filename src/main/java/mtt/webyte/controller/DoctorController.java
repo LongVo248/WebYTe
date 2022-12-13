@@ -1,5 +1,13 @@
 package mtt.webyte.controller;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.SystemException;
 import javax.validation.Valid;
 
@@ -11,8 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import mtt.webyte.dto.DepartmentDTO;
 import mtt.webyte.dto.DoctorDTO;
 import mtt.webyte.dto.MessageResponse;
+import mtt.webyte.dto.UserDTO;
+import mtt.webyte.model.User;
 import mtt.webyte.services.impl.DepartmentServiceImpl;
 import mtt.webyte.services.impl.DoctorServiceImpl;
+import mtt.webyte.services.impl.Excel;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -55,5 +66,24 @@ public class DoctorController {
 	public ResponseEntity<?> findOneDoctor(@PathVariable Long id) throws SystemException{
 		return ResponseEntity.ok(doctorService.findOne(id)); 
 	}
+
+@GetMapping("/export-to-excel")
+    public void exportIntoExcelFile(HttpServletResponse response, @RequestParam() String from, @RequestParam() String to) throws IOException {
+
+		try {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=doctor" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<DoctorDTO> listOfStudents = doctorService.findDoctorWithSchedule(0, 1000, "");
+        Excel generator = new Excel(listOfStudents, new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
+        generator.generateExcelFile(response);
+		} catch (ParseException ex) {
+		}
+    }
 
 }
