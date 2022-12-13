@@ -16,4 +16,6 @@ public class PrescriptionDTO extends AbstractDTO implements Serializable {
     private Long prescriptionAmount;
     private String prescriptionDosage;
     private String prescriptionDuration;
+    private Long medicineId;
+    private MedicineDTO medicineDTO;
 }

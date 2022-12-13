@@ -2,6 +2,8 @@ package mtt.webyte.controller;
 
 import mtt.webyte.dto.AuthenticationDTO;
 import mtt.webyte.dto.ChangePasswordRequest;
+import mtt.webyte.dto.ForgetPassword;
+import mtt.webyte.dto.UpdateImageRequest;
 import mtt.webyte.dto.UpdateUserRequest;
 import mtt.webyte.dto.UserDTO;
 import mtt.webyte.model.User;
@@ -54,6 +56,26 @@ public class AuthenticationRestController {
         } catch (BadCredentialsException e) {
             logger.error(request.getRequestURL().toString(), "login", e);
             throw new SystemException("Incorrect username or password");
+        }
+    }
+
+    @PutMapping("/update-image")
+    public ResponseEntity<?> updateImaeg(@RequestBody UpdateImageRequest updateImageRequest) {
+        try {
+            return ResponseEntity.ok(userServiceImpl.updateImage(updateImageRequest));
+        } catch (Exception e) {
+            logger.error("registerAccount", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/forget-password")
+    public ResponseEntity<?> forgetPassword(@RequestBody ForgetPassword updateImageRequest) {
+        try {
+            return ResponseEntity.ok(userServiceImpl.forgetPassword(updateImageRequest));
+        } catch (Exception e) {
+            logger.error("registerAccount", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
