@@ -21,5 +21,7 @@ public class AppointmentScheduleDTO extends AbstractDTO implements Serializable 
     private Long userId;
     private Long doctorId;
     private UserDTO doctorDTO; 
-    private UserDTO patientDTO; 
+    private UserDTO patientDTO;
+
+    private Long price;
 }
