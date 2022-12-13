@@ -16,12 +16,15 @@ import lombok.Setter;
 import mtt.webyte.dto.DepartmentDTO;
 import mtt.webyte.dto.DoctorDTO;
 import mtt.webyte.dto.MedicineDTO;
+import mtt.webyte.dto.ScheduleDTO;
 import mtt.webyte.enums.RoleType;
 import mtt.webyte.mapper.DepartmentMapper;
 import mtt.webyte.mapper.DoctorMapper;
 import mtt.webyte.mapper.MedicineMapper;
+import mtt.webyte.mapper.ScheduleMapper;
 import mtt.webyte.model.Department;
 import mtt.webyte.model.Medicine;
+import mtt.webyte.model.Schedule;
 import mtt.webyte.model.User;
 import mtt.webyte.repository.DepartmentRepository;
 import mtt.webyte.repository.MedicineRepository;
@@ -36,6 +39,7 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
     private final DepartmentRepository departmentRepository;
     private final DoctorMapper mapper;
 	private final DepartmentMapper departmentMapper;
+	private final ScheduleMapper scheduleMapper;
 	private final PasswordEncoder passwordEncoder;
 	private final MailService mailService;
 
@@ -72,6 +76,25 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
 				departmentDTOs.add(departmentMapper.toDto(department, getCycleAvoidingMappingContext()));	
 			}	
 			doctor.setDepartmentDTOs(departmentDTOs);
+			dtos.add(doctor);
+		}		
+	}
+	return dtos;
+    }
+
+    public List<DoctorDTO> findDoctorWithSchedule(Integer page, Integer size, String name){
+	Pageable pagination = getPageable(page, size);
+	List<User> doctors = repository.findByUserFNameContainingOrUserLNameContainingAndRole(name, name, RoleType.ROLE_DOCTOR, pagination).toList();
+	List<DoctorDTO> dtos = new ArrayList<>();
+	for(User entity: doctors) {
+		if (entity.getRole() == RoleType.ROLE_DOCTOR) {
+			DoctorDTO doctor = mapper.toDto(entity, getCycleAvoidingMappingContext());
+			Set<Schedule> schedules = entity.getSchedules();
+			List<ScheduleDTO> scheduleDTOs = new ArrayList<>();
+			for (Schedule schedule : schedules) {
+				scheduleDTOs.add(scheduleMapper.toDto(schedule, getCycleAvoidingMappingContext()));	
+			}	
+			doctor.setScheduleDTOs(scheduleDTOs);
 			dtos.add(doctor);
 		}		
 	}
