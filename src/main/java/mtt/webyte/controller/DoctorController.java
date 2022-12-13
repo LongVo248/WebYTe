@@ -68,7 +68,7 @@ public class DoctorController {
 	}
 
 @GetMapping("/export-to-excel")
-    public void exportIntoExcelFile(HttpServletResponse response, @RequestParam() String from, @RequestParam() String to) throws IOException {
+    public void exportIntoExcelFile(HttpServletResponse response, @RequestParam() String from, @RequestParam() String to, @RequestParam(required = false) Long id) throws IOException {
 
 		try {
         response.setContentType("application/octet-stream");
@@ -79,7 +79,7 @@ public class DoctorController {
         String headerValue = "attachment; filename=doctor" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<DoctorDTO> listOfStudents = doctorService.findDoctorWithSchedule(0, 1000, "");
+        List<DoctorDTO> listOfStudents = doctorService.findDoctorWithSchedule(0, 1000, "", id);
         Excel generator = new Excel(listOfStudents, new SimpleDateFormat("yyyy-MM-dd").parse(from), new SimpleDateFormat("yyyy-MM-dd").parse(to));
         generator.generateExcelFile(response);
 		} catch (ParseException ex) {

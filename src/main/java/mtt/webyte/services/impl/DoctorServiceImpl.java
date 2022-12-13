@@ -82,9 +82,17 @@ public class DoctorServiceImpl extends AbstractServiceImpl<UserRepository, Docto
 	return dtos;
     }
 
-    public List<DoctorDTO> findDoctorWithSchedule(Integer page, Integer size, String name){
+    public List<DoctorDTO> findDoctorWithSchedule(Integer page, Integer size, String name, Long id){
 	Pageable pagination = getPageable(page, size);
-	List<User> doctors = repository.findByUserFNameContainingOrUserLNameContainingAndRole(name, name, RoleType.ROLE_DOCTOR, pagination).toList();
+	List<User> doctors = new ArrayList<>();
+
+	if(id != null) {
+		User doctor = repository.findById(id).get();
+		doctors.add(doctor);
+	} else {
+	 	doctors = repository.findByUserFNameContainingOrUserLNameContainingAndRole(name, name, RoleType.ROLE_DOCTOR, pagination).toList();
+	}
+
 	List<DoctorDTO> dtos = new ArrayList<>();
 	for(User entity: doctors) {
 		if (entity.getRole() == RoleType.ROLE_DOCTOR) {
