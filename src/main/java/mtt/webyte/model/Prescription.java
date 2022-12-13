@@ -36,8 +36,8 @@ public class Prescription extends AbstractAuditEntity implements Serializable {
     @Column(name = "DURATION", nullable = false)
     private String prescriptionDuration;
 
-    @ManyToOne(mappedBy = "")
-    private Medicine medicines;
+    @ManyToMany(mappedBy = "prescriptions")
+    private Set<Medicine> medicines = new java.util.LinkedHashSet<>();
 
     @OneToMany(mappedBy = "prescription")
     private Set<HealthRecord> healthRecords = new java.util.LinkedHashSet<>();

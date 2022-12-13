@@ -53,20 +53,6 @@ public class AppointmentScheduleServiceImpl extends AbstractServiceImpl<Appointm
 	return appointmentScheduleDTOs;
     }
 
-    public Boolean updateAppointmentStatusDone(Long id) {
-	AppointmentSchedule appointmentSchedule = appointmentScheduleRepository.findById(id).get();
-	appointmentSchedule.setAppointmentStatus("done");
-	appointmentScheduleRepository.save(appointmentSchedule);
-	return true;
-    }
-
-    public Boolean updateAppointmentStatusCompelete(Long id) {
-	AppointmentSchedule appointmentSchedule = appointmentScheduleRepository.findById(id).get();
-	appointmentSchedule.setAppointmentStatus("complete");
-	appointmentScheduleRepository.save(appointmentSchedule);
-	return true;
-    }
-
     public List<AppointmentScheduleDTO> getApointmentByDateAndDoctor(Long id, Date date){
 	List<AppointmentSchedule> schedules = 
 		appointmentScheduleRepository.findApointment(id, date);	
